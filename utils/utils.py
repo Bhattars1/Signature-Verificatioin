@@ -3,6 +3,7 @@
 import random
 import sklearn
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.model_selection import train_test_split
 import torch.optim as optim
@@ -61,7 +62,7 @@ def create_dataloader(X_train_tensor, y_train_tensor, X_test_tensor, y_test_tens
     )
     return train_dataloader, test_dataloader
 
-def utils():
+def utils(model):
 
     loss_fn = nn.CrossEntropyLoss()
     # Define learning rate and momentum
@@ -69,7 +70,7 @@ def utils():
     momentum = 0.9
 
     # Initialize SGD optimizer, only including parameters that require gradients
-    optimizer = optim.SGD(filter(lambda p: p.requires_grad, vgg19.parameters()), lr=learning_rate, momentum=momentum)
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr=learning_rate, momentum=momentum)
     return loss_fn, optimizer
 
 # Define a accuracy function
@@ -78,3 +79,6 @@ def accuracy(outputs, labels):
     predictions = outputs.argmax(dim=1)
     correct = (predictions == labels).sum().item()
     return correct / labels.size(0) * 100  # Convert to percentage
+
+
+

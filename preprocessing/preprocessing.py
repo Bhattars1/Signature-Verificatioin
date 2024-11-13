@@ -24,12 +24,8 @@ def load(path):
     else:
       pass
   return forgeries, original
-sample1_path = "Signature-Verificatioin/Dataset/Sample_12"
-sample2_path = "Signature-Verificatioin/Dataset/Sample_15"
-sample1_forgeries, sample1_original = load(sample1_path)
-sample2_forgeries, sample2_original = load(sample2_path)
 
-import numpy as np
+
 def extract_blocks(image_list, window_size = (224,224), step_size = 20):
     """
     Extract overlapping blocks from a list of images using a sliding window approach
@@ -60,8 +56,6 @@ def extract_blocks(image_list, window_size = (224,224), step_size = 20):
           brightened_block = np.clip(brightened_block, 0, 255).astype(np.uint8)
           blocks.append(brightened_block)
     return blocks
-original1_block = extract_blocks(sample1_original)
-forgeries1_block = extract_blocks(sample1_forgeries)
 
 def rotate_blocks(blocks, angle):
     """
@@ -92,8 +86,6 @@ def rotate_blocks(blocks, angle):
             rotated_blocks.append(rotated_block)
 
     return rotated_blocks
-rotated_original1 = rotate_blocks(original1_block, 10)
-rotated_forgeries1 = rotate_blocks(forgeries1_block, 30)
 
 def classify_blocks(blocks, threshold=250, valid_percentage=0.075):
     """
@@ -124,9 +116,6 @@ def classify_blocks(blocks, threshold=250, valid_percentage=0.075):
 
     return valid_blocks
 
-valid_original1 = classify_blocks(rotated_original1)
-valid_forgeries1 = classify_blocks(rotated_forgeries1)
-
 def save_images(images, save_dir, prefix):
     """
     Save images to the specified directory with a given prefix.
@@ -146,9 +135,3 @@ def save_images(images, save_dir, prefix):
         filename = os.path.join(save_dir, f"{prefix}_{idx}.png")
         cv2.imwrite(filename, img_to_save)
 
-
-# Save the valid blocks to the 'valid_images' directory
-save_images(valid_original1, 'data/valid_images', 'valid_original')
-
-# Save the forged blocks to the 'forged_images' directory
-save_images(valid_forgeries1, 'forged_images', 'valid_forgery')
