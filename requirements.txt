@@ -1,0 +1,7 @@
+numpy
+torch
+opencv-python
+pillow
+random2
+scikit-learn
+torchvision
