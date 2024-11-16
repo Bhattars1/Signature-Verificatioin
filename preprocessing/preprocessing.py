@@ -57,7 +57,7 @@ def extract_blocks(image_list, window_size = (224,224), step_size = 20):
           blocks.append(brightened_block)
     return blocks
 
-def rotate_blocks(blocks, angle):
+def rotate_blocks(blocks, angle=10):
     """
     Rotate each sub-image block by a predefined angle until a full 360 degrees rotation is done.
 

@@ -14,7 +14,7 @@ def train(epochs, train_dataloader, optimizer, loss_fn):
 
     # Training loop
     vgg19.train()
-    print("Stratting training")
+    print("Strating training")
     for epoch in range(num_epochs):
         epoch_loss = 0.0
         epoch_accuracy = 0.0
@@ -26,7 +26,7 @@ def train(epochs, train_dataloader, optimizer, loss_fn):
 
             optimizer.zero_grad()
 
-            # Forward pass (output raw logits, no need for sigmoid)
+            # Forward pass
             outputs = vgg19(X_batch)
 
             # Calculate loss
@@ -58,6 +58,3 @@ def train(epochs, train_dataloader, optimizer, loss_fn):
         # Store metrics for plotting
         train_losses.append(avg_loss)
         train_accuracies.append(avg_accuracy)
-
-    model_save_path = 'models\vgg19_trained_model.pth'
-    torch.save(vgg19.state_dict(), model_save_path)

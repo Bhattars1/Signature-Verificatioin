@@ -5,7 +5,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def vgg19():
     # Load VGG-19 pretrained model
-    vgg19 = models.vgg19(pretrained=True)
+    vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)
 
     # Modify the first convolutional layer to accept 1 input channel
     vgg19.features[0] = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))

@@ -52,7 +52,7 @@ def create_dataloader(X_train_tensor, y_train_tensor, X_test_tensor, y_test_tens
 
     # Turn datasets into iterables (batches)
     train_dataloader = DataLoader(train_data,  # dataset to turn into iterable
-        batch_size=BATCH_SIZE,  # how many samples per batch?
+        batch_size=BATCH_SIZE, 
         shuffle=True 
     )
 
