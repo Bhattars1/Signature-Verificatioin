@@ -1,3 +1,21 @@
 The Signature Verifier is a machine learning system designed to authenticate handwritten signatures and detect forgeries with minimal input. Using a single genuine signature image and one forged image (or more for higher accuracy), the system trains a deep learning model to perform reliable signature verification. Inspired by the research paper "An Offline Signature Verification and Forgery Detection Method Based on a Single Known Sample and an Explainable Deep Learning Approach", this project combines a unique local feature extraction method. It simplifies the setup process, making it accessible to anyone interested in biometric verification.
+
 link to the paper: https://www.mdpi.com/2076-3417/10/11/3716
+
+
 To get started, clone the repository and install the required dependencies by running pip install -r requirements.txt. Then, execute app.py to begin training the model, specifying the desired number of epochs. Training may take some time, depending on the dataset and system configuration. Once training is complete, use signature_verifier.py to verify whether a given signature is genuine or forged. The system offers flexibility, supporting multiple training samples for enhanced accuracy while maintaining ease of use.
+
+
+Limitations:
+
+The system has several limitations that hinder its practicality for production use. It requires forged signature samples for training, which raises ethical concerns and can be impractical. Training the model is time-consuming and unsuitable for real-time applications. Additionally, a separate verifier model must be trained for each individual, making the system inefficient for large-scale use.
+
+
+
+More technical details:
+
+This project uses a deep learning-based approach to verify handwritten signatures and detect forgeries. The system is designed to work with just one genuine signature sample and at least one forged sample for training, making it ideal for situations where only a few examples of a signature are available. The project is developed using PyTorch, OpenCV, and other supporting libraries.
+
+The preprocessing steps in this project are crucial for preparing the signature images before they are fed into the deep learning model. First, the raw signature images are converted to grayscale eliminating unnecessary color information. Next, data augmentation is applied using a sliding window technique. A 224x224 window shifts by 20 pixels at a time, extracting overlapping sub-images from the original signature. This process generates thousands of smaller sub-images from a single signature, not only increasing the dataset size but, more importantly, allowing the model to focus on local patterns. This helps the model better detect fine details, improving its ability to generalize and accurately verify signatures by capturing unique features that might be missed in larger-scale images. In addition, noise reduction is performed by brightening the sub-images by 7.5% to reduce any background noise caused by the paper texture, without altering the important features of the handwriting. Rotation is also applied by rotating the sub-images clockwise at predefined angles, helping the model become more robust to variations in signature orientation.
+
+For the deep learning model, transfer learning is utilized by using pre-trained weights from the ImageNet competition for the VGG-19 architecture. The VGG-19 model has been trained on millions of images to recognize 1000 different categories, making it highly effective at feature extraction. By using these pre-trained weights, we can take advantage of the model's existing knowledge. After applying the pre-trained weights, we fine-tune the model to improve accuracy by training only the last three layers while freezing the layers above them. This process ensures that the valuable features learned from ImageNet are preserved, while the final layers are adapted for the specific task of signature verification. The model is trained using the Stochastic Gradient Descent (SGD) optimizer, with a cross-entropy loss function and a softmax activation function, which align with the VGG-19 architecture to produce predictions of whether a signature is genuine or forged.
